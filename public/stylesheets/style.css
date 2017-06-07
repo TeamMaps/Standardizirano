@@ -91,8 +91,11 @@ body {
 
 #novo {
     border-top: solid 1px black;
-    max-height: 37em;
+    max-height: 33em;
     overflow: scroll;
+    opacity: 0.2;
+    transition: opacity 2s;
+
 }
 
 .media-body{
@@ -170,12 +173,9 @@ body {
 .tablicadiv {
     position: relative;
     padding: 0px !important;
-    left:1.05%;
     z-index: 2;
-    opacity: 0.2;
-    transition: opacity 2s;
-    margin-top: 6%;
 }
+
 .tablicadiv:hover {
     opacity:1;
 }
@@ -207,3 +207,31 @@ body {
     max-height: 300px;
 }
 
+
+.buttondiv {
+    position: absolute;
+    left:85%;
+    top:7%;
+    z-index: 2;
+}
+
+#muhbuton {
+
+}
+
+
+
+.mojrow {
+    height:100px;
+}
+
+
+
+.mojbtn {
+    margin-top: 30px !important;
+    width:50%;
+    display:block !important;
+    margin:auto;
+    position:relative;
+    left:3%;
+}
