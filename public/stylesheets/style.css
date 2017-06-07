@@ -1,16 +1,6 @@
-
-header {
-    text-align: center;
-    background-image: url(https://static.pexels.com/photos/5110/road-dawn-mountains-sky.jpeg);
-    height:70px;
-    padding-top: 30px;
-    color:antiquewhite;
-}
-
 body {
     margin:0px;
     padding: 0px;
-    padding-top: 5em;
     background-color: #eaebed !important;
 } 
 
@@ -21,18 +11,12 @@ body {
     color:aqua;
 }
 
-nav {
-
-}
-
 #markeri {
     width:5%;
     height:400px;
     float:left;
     background-color: gray;
 }
-
-
 
 #feed {
     float:left;
@@ -53,14 +37,6 @@ nav {
     bottom: 5px;
 }
 
-
-.fb-like {
-    height:100px;
-    width:100px;
-}
-
-
-
 .page-header {
   padding-top: 1em;
 }
@@ -71,38 +47,21 @@ nav {
     right:1.5em;
 }
 
-
-
-
-
-
-
 #map {
-    height:38em;
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:100%;
+    width:100%;
+    z-index: 1;
 }
-
-
-
-
 
 .col-sm-6 {
     padding: 0px !important;
 }
 
-
-
-
-
 .modal-header {
     text-align: center;
-}
-
-
-
-
-
-.mojnav {
-    color:floralwhite !important;
 }
 
 .fa-facebook {
@@ -114,8 +73,6 @@ nav {
     left: 60.5%;
 }
 
-
-
 .marg {
     position: relative;
     right:2.5%;
@@ -125,7 +82,6 @@ nav {
     border-bottom:solid 1px black;
     text-align:center;
     font-family: 'Cormorant SC', sans-serif;
-    
 }
 
 .mediaslika{
@@ -133,13 +89,9 @@ nav {
      object-fit: cover;
 }
 
-
-
 #novo {
-    border-left: solid 1px black;
     border-top: solid 1px black;
-    padding: 3%;
-    max-height: 40em;
+    max-height: 37em;
     overflow: scroll;
 }
 
@@ -158,17 +110,12 @@ nav {
 
 .media:hover{
     background-color: #323bb5 !important;
-    opacity: 0.4;
 }
-
-
 
 #shit {
     position:relative;
     top:0.4em;
 }
-
-
 
 .carousel-inner > .item > img {
     margin: 0 auto;
@@ -219,3 +166,44 @@ nav {
 #vmopis {
     text-align: center;
 }
+
+.tablicadiv {
+    position: relative;
+    padding: 0px !important;
+    left:1.05%;
+    z-index: 2;
+    opacity: 0.2;
+    transition: opacity 2s;
+    margin-top: 6%;
+}
+.tablicadiv:hover {
+    opacity:1;
+}
+
+#logo {
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index: 2;
+}
+
+.facelogin {
+    position: absolute;
+    top:20px;
+    left:82%;
+    z-index: 2;
+}
+
+#buttondiv {
+    margin-top:1%;
+    margin-bottom: 1%;
+}
+
+#viewCarousel {
+    display:none;
+}
+
+#bodyKuka {
+    max-height: 300px;
+}
+

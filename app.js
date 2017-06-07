@@ -61,7 +61,7 @@ app.use(expressSession({secret:"secret", resave:true, saveUninitialized:false}))
 //Passport
 app.use(passport.initialize()); 
 app.use(passport.session());
-passport.use("local", new LocalStrategy(function(username, password, done) {
+/*passport.use("local", new LocalStrategy(function(username, password, done) {
      connection.query('SELECT user_id,username,password FROM Users WHERE username = ?', username, function(err, rows, columns)
      {
      if (err) throw err
@@ -90,7 +90,7 @@ passport.use("local-signup",new LocalStrategy({passReqToCallback:true}, function
             })    
         })
     })
-})); 
+})); */
 passport.use(new FacebookStrategy({
     clientID: 224816561339578 ,
     clientSecret: "641bb26cb4213d76d8e9cef1a35ef859",
@@ -127,13 +127,13 @@ app.get('/',function(req,res,next){
     res.sendFile('index.html', { root: __dirname } )
 })
 
-app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/images', 
-    failureRedirect : '/signup', 
-}));
-app.get('/login',function(req,res,next){
-    res.sendFile('login.html',{root: __dirname})
-});
+//app.post('/signup', passport.authenticate('local-signup', {
+//    successRedirect : '/images', 
+//    failureRedirect : '/signup', 
+//}));
+//app.get('/login',function(req,res,next){
+//    res.sendFile('login.html',{root: __dirname})
+//});
 
 app.get('/auth/facebook', passport.authenticate('facebook',{scope: ['user_friends', 'email','public_profile'] })); //
 
@@ -213,7 +213,7 @@ app.route('/markers')
 })
 .post(authenticated, function(req,res,next){ // ovdje trenutacno radim
     var inc = req.body;
-    if(inc.title == "" || typeof inc.lat == "undefined"){ res.sendStatus(422)}
+    if(inc.title == "" || typeof inc.lat == undefined){ res.sendStatus(422)}
     else{
     var opis = (inc.opis)? inc.opis : "" ;
     var slike = (inc.slike)? inc.slike : "" ;
