@@ -95,7 +95,6 @@ body {
     overflow: scroll;
     opacity: 0.2;
     transition: opacity 2s;
-
 }
 
 .media-body{
@@ -176,7 +175,7 @@ body {
     z-index: 2;
 }
 
-.tablicadiv:hover {
+#novo:hover {
     opacity:1;
 }
 
