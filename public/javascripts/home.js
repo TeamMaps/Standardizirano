@@ -65,8 +65,10 @@ function dohvatiUsera(){
     ajax.open("GET","/users",true);
     ajax.onreadystatechange = function (){
         if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
+            console.log(this.responseText)
             var data = JSON.parse(this.responseText);
-            document.getElementById("profil").innerHTML = "<span class='glyphicon glyphicon-user'></span>"+data.name;
+            document.getElementById("profile").innerHTML = data.name;
+            document.getElementById("profilna").src = data.picture;
         }
     }
     ajax.send();

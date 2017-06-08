@@ -234,3 +234,26 @@ body {
     position:relative;
     left:3%;
 }
+
+.profile {
+    height:50px;
+    background-color:#3b5998;
+    width: 70%;
+    margin:auto;
+    position: relative;
+    border-radius:10px;
+    top:20px;
+}
+
+
+
+#profile {
+    float: left;
+    color:white;
+    margin-top: 15px;
+}
+
+#profilna {
+   float:left;
+    margin-right: 5%;
+}
