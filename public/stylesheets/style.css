@@ -143,7 +143,7 @@ body {
 
 .icon-bar {
     width: 100%; /* Full-width */ /* Dark-grey background */
-    overflow: auto; /* Overflow due to float */
+    overflow: auto;
 }
 
 .icon-bar a {
@@ -214,11 +214,6 @@ body {
     z-index: 2;
 }
 
-#muhbuton {
-
-}
-
-
 
 .mojrow {
     height:100px;
@@ -256,4 +251,21 @@ body {
 #profilna {
    float:left;
     margin-right: 5%;
+}
+
+.iconrow {
+    position: absolute;
+    padding-top: 15px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 1s;
+}
+.iconrow:hover{
+    opacity:1;
+}
+
+.ikondol {
+    border-left:1px solid black;
+    border-right:1px solid black;
+    overflow: hidden;
 }

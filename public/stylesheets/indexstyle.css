@@ -23,3 +23,12 @@
 }
 
 
+
+.row {
+    z-index: 2;
+}
+
+.zeleni {
+    height:30px;
+    background-color: black;
+}

@@ -185,7 +185,7 @@ app.get('/protected/:userFolder/:imageName', function(req,res,next){
    res.sendFile('./protected/'+req.params.userFolder+'/'+req.params.imageName,{root:__dirname})
 });
 
-app.route('/teams')
+/*app.route('/teams')
 .get(function(req,res,next){
     
 })
@@ -197,17 +197,16 @@ app.route('/teams')
 })
 .delete(function(req,res,next){
     
-});
+});*/  // will be adding later
 
 app.route('/markers')
 .get(function(req,res,next){
     var prijatelji = [];
     for(x in req._passport.session.user.friends){prijatelji.push(req._passport.session.user.friends[x])}
     prijatelji.push(req._passport.session.user.facebook_id);
-    connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+prijatelji.join()+')', function(err, rows){ // dodat ovdje mysql.escape
+    connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+ prijatelji.join()+ ')', function(err, rows){ 
         if (err) throw err;
         res.json(rows);
-        // vise slika vraca opet isti marker, nac gdje se ponavlja i samo apendat
     })
 })
 .post(authenticated, function(req,res,next){ // ovdje trenutacno radim
