@@ -14,10 +14,9 @@ var bcrypt = require('bcryptjs');
 var expressSession = require('express-session');
 var fs = require('file-system');
 var mime = require("mime");
+var shortId = require("shortid");
 
 var config = require('./config'); 
-
-var imagePath = "";
 
 var connection = mysql.createConnection({
     host:     "localhost",
@@ -29,12 +28,13 @@ connection.connect();
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      imagePath += '/protected/'+req._passport.session.user.facebook_id;  //pass to sljedeci umjesto globalne, ili dodat midlwer koji generira random prije multera pa to iskoristit u obadvije funkc
-    cb(null, './protected/'+req._passport.session.user.facebook_id)
+    req.picId = './protected/' + req._passport.session.user.facebook_id;
+    cb(null, req.picId)
   },
   filename: function (req, file, cb) {
-      imagePath += '/no.'+ mime.extension(file.mimetype)
-    cb(null, 'no.'+ mime.extension(file.mimetype))
+    var filename = shortId.generate()+"."+ mime.extension(file.mimetype);
+    req.picId += '/' +filename;
+    cb(null, filename);
   }
 });
 
@@ -172,8 +172,7 @@ app.route('/users')
 app.route('/images')
 //console.log(req._passport.session.user.friends); // array frendova na fejsu
 .post(upload.any(), function(req,res,next){
-    res.json(imagePath);
-    imagePath = "";
+    res.json(req.picId);
 }) // unikatna imena multer
 .put(function(req,res,next){
    
