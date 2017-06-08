@@ -91,10 +91,17 @@ body {
 
 #novo {
     border-top: solid 1px black;
-    max-height: 33em;
+    max-height: 462px;
     overflow: scroll;
     opacity: 0.2;
     transition: opacity 2s;
+    min-height: 462px;
+}
+@media screen and (max-height: 640px) {
+    #novo {
+       max-height:400px;
+       min-height:400px;
+    }
 }
 
 .media-body{

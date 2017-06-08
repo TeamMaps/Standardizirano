@@ -4,7 +4,7 @@ var vmopis = document.getElementById("vmopis");                    // view modal
 var karouselkuka = document.getElementById("karouselkuka");        // polje unutar modala
 var karousel = document.getElementById("myCarousel");
 var slike = [];
-var icon = "./images/icon1.png";
+var icon = 1;
 var currentIcon = document.getElementById("ikona1");
 var title = document.getElementById("title");
 var opis = document.getElementById("opis");
@@ -14,6 +14,10 @@ var viewKuka = document.getElementById("viewKuka");
 var bodyKuka = document.getElementById("bodyKuka");
 var viewPrva = document.getElementById("viewprva");
 var viewDruga = document.getElementById("viewdruga");
+var mediaPointeri = [];
+for(var i = 0; i < 20; i++){
+    mediaPointeri[i] = [];
+}
 
 var aktiv = 0;
 
@@ -27,12 +31,12 @@ function initMap() {
           },
           zoom: 8,
           center: uluru
-        });
-        map.addListener('click', function(e) {
-        lng = e.latLng.lng();
-        lat = e.latLng.lat();
-        $('#myModal').modal();
-        });
+          });
+          map.addListener('click', function(e) {
+          lng = e.latLng.lng();
+          lat = e.latLng.lat();
+          $('#myModal').modal();
+          });
 }    
 
 function iconSelector(that){
@@ -90,7 +94,7 @@ function modalSend(){
     paket.send('title='+title.value+'&privatnost='+checked+'&lat='+lat+'&lng='+lng+'&opis='+opis.value+'&slike='+slike+"&icon="+icon);
      var marker = new google.maps.Marker({
               position: { lat : lat, lng : lng },
-              icon: icon,
+              icon: "./images/icon"+icon+".png",
               map: map,
               content: opis.value
               });
@@ -105,7 +109,7 @@ function modalSend(){
     $('#myModal').modal("toggle");
     title.value = "";
     opis.value = "";
-    icon = "./images/icon1.png";
+    icon = 1;
     currentIcon.className = "";
     currentIcon = document.getElementById("ikona1");
     currentIcon.className = "active";
@@ -134,7 +138,7 @@ function saljiSliku(){
 function teamMarkerMediaConstructor(dataObject){
     var marker = new google.maps.Marker({
         position: { lat : dataObject.lat, lng : dataObject.lng },
-        icon: dataObject.icon,
+        icon: "./images/icon"+dataObject.icon+".png",
         images: dataObject.path.split(","),
         map: map,
         title: dataObject.title,
@@ -216,8 +220,22 @@ function teamMarkerMediaConstructor(dataObject){
         mediabody.appendChild(textnode);
         media.appendChild(medialeft);
         media.appendChild(mediabody);
+        mediaPointeri[dataObject.icon-1].push(media)
         feed.appendChild(media);
 }
+
+function iconMediaToggler(num,ikon){
+    if(typeof mediaPointeri[num-1][0] != "undefined"){
+
+    if(ikon.className == "active"){ikon.className= "";for(x in mediaPointeri[num-1]){mediaPointeri[num-1][x].style.display = "none"; mediaPointeri[num-1][x].googlemarker.setVisible(false)}}
+        
+    else {ikon.className = "active" ; for(x in mediaPointeri[num-1]){mediaPointeri[num-1][x].style.display = "block"; 
+                                                                     mediaPointeri[num-1][x].googlemarker.setVisible(true)}}
+        
+    }
+}
+    
+    
 
 $('#viewModal').on('hidden.bs.modal', function () {
   if ( typeof bodyKuka.childNodes[0] == "object"){ bodyKuka.removeChild(bodyKuka.childNodes[0])};
