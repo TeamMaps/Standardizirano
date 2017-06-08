@@ -37,6 +37,10 @@ function initMap() {
           lat = e.latLng.lat();
           $('#myModal').modal();
           });
+          map.addListener('mouseover', function(e){
+             padlng = e.latLng.lng();
+             padlat = e.latLng.lat();
+          })
 }    
 
 function iconSelector(that){
@@ -259,3 +263,22 @@ $('#viewModal').on('hidden.bs.modal', function () {
 //     js.src = "//connect.facebook.net/en_US/sdk.js";
 //     fjs.parentNode.insertBefore(js, fjs);
 //   }(document, 'script', 'facebook-jssdk'));
+tornadoArray = [];
+function tornado(){
+    var pad = new google.maps.LatLng (padlat,padlng);
+    for(var i = 0; i < 20; i++){
+    for(x in mediaPointeri[i])
+    tornadoArray.push({udaljenost:(google.maps.geometry.spherical.computeDistanceBetween(pad, mediaPointeri[i][x].googlemarker.getPosition())/1000).toFixed(2),
+                  pointer:mediaPointeri[i][x]}
+                );
+    }
+    tornadoArray.sort(function(a, b){return a.udaljenost-b.udaljenost});
+    tornadopos = 0;
+    tornadoArray[0].pointer.googlemarker.markModal();
+}
+//dodat da tornado ignorira skrivene, uljepsat modale
+function tornadoView(){
+    $('#viewModal').modal("hide");
+    tornadopos++;
+    tornadoArray[tornadopos].pointer.googlemarker.markModal(); 
+}

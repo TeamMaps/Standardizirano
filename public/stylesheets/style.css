@@ -276,3 +276,9 @@ body {
     border-right:1px solid black;
     overflow: hidden;
 }
+
+#parachut {
+    position:absolute;
+    top:450px;
+    z-index: 2;
+}
