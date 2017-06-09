@@ -154,6 +154,11 @@ app.get("/logout",function(req,res){
     req.logout();
     res.redirect("/");
 })
+app.get("/userData", function(req,res){
+    connection.query('SELECT title,opis,marker_id,icon,privacy FROM markers WHERE Users_user_id = ?',req._passport.session.user.id,function(err,rows){
+        res.json(rows);
+    })
+})
 // REST API
 app.route('/users')
 .get(function(req,res,next){
@@ -238,11 +243,10 @@ app.route('/markers')
 app.delete('/markers:id',function(req,res,next){
     connection.query('SELECT Users_user_id FROM Markers WHERE marker_id = ?', req.params.id,function(err, rows){
         if(err) throw err;
-        console.log(rows);
-        console.log(req.user);
         if(rows[0].Users_user_id == req.user){
          connection.query('DELETE FROM Markers WHERE marker_id =?', req.params.id, function(err,rows){
              if(err) throw err;
+             res.sendStatus(200);
          })
         }
         else res.sendStatus(401);

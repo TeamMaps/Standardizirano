@@ -8,45 +8,34 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta charset="utf-8">
 </head>
-<body onload="load()">
-       
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">TeamMaps</a>
+<body onload="loadProfile();loadMyMarkers()">
+
+<div class="container col-sm-6 svijetlo" style="min-height:620px !important; overflow:hidden;">
+    <div class="row" style="margin-top:40px">
+    <img height="300" style="display:block; margin:auto;" id="profilnaprof">
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a href="#"><span class="glyphicon glyphicon-home"></span>Home</a></li>
-        <li><a href="#">Tim</a></li>
-        <li><a href="#">Filter</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul>
-     </div>
-</nav>
+    <h2 style="margin-top:3em;text-align:center" id="username">Username:</h2>
 
-<div class="container col-sm-offset-2 col-sm-4" id="prostorzasliku">
+    <h2 style="margin-top:0.5em;color:gray;text-align:center" id="email">Email:</h2>
     
+    <a class="btn btn-danger btn-lg" href="/logout" style="margin-top:2em; margin-left:20%">Logout <span class="glyphicon glyphicon-off"></span></a>
+    <a class="btn btn-primary btn-lg" href="/" style="margin-top:2em; margin-left:55%; position:relative; bottom:82px;">Back to map    <span class="glyphicon glyphicon-globe"></span></a>
 </div>
-
-<div class="container col-sm-6">
-    <h2 style="margin-top:3em" id="username">Username:</h2>
-    <h2 style="margin-top:4.5em" id="email">Email:</h2>
-    <a class="btn btn-danger" href="/logout" style="margin-top:5.5em;margin-left:43%">Logout</a>
+<div class="container col-sm-6 svijetlo2" id="myMarks">
+    <div class="list-group marklist" id="hookme">
+    <li class="list-group-item active" style="text-align:center">
+    Moji markeri
+    </li>
+    </div>
 </div>
 
 <script>
-var prostor = document.getElementById("prostorzasliku");
+var img = document.getElementById("profilnaprof");
 var username = document.getElementById("username");
 var email = document.getElementById("email");
-function load(){
+var hookme = document.getElementById("hookme");
+    
+function loadProfile(){
     var ajax = new XMLHttpRequest();
     ajax.open("GET","/users",true);
     ajax.onreadystatechange = function () {
@@ -54,17 +43,42 @@ function load(){
             var data = JSON.parse(this.responseText);
             console.log(data);
             username.innerHTML = "Username: "+data.name;
-            //email.innerHTML = data.email
-            var image = document.createElement("img");
-            image.src = data.picture;
-            image.height = 300;
-            prostor.appendChild(image);
+            email.innerHTML = "Email: "+ (data.email || "Not provided")
+            img.src = data.picture;
         }
     }
     ajax.send();
 }
 
-
+function loadMyMarkers(){
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET","/userData",true);
+    ajax.onreadystatechange = function () {
+        if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
+            var data = JSON.parse(this.responseText);
+            console.log(data)
+            for(x in data){
+            var listitem = document.createElement("li");
+            listitem.className = "list-group-item";
+            listitem.vrijednost = data[x].marker_id;
+            listitem.innerHTML = data[x].title;
+            var buton = document.createElement("button");
+            buton.innerHTML = "Delete";
+            buton.className = "btn btn-danger btn-sm pull-right markbtn";
+            buton.vrijednost = data[x].marker_id;
+            buton.addEventListener("click",function(){
+                var brisac = new XMLHttpRequest();
+                brisac.open("DELETE","/markers"+this.vrijednost, true);
+                brisac.send();
+                this.parentElement.style.display = "none";
+            });
+            listitem.appendChild(buton);
+            hookme.appendChild(listitem);
+            }
+        }
+    }
+    ajax.send();
+}
 
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

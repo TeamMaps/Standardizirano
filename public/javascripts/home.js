@@ -64,13 +64,6 @@ function dobaviMarkere(){
     ajax.send();
 }
 
-function obrisiMarker(marker){
-    marker.setVisible(false);
-    var brisac = new XMLHttpRequest();
-    brisac.open("DELETE","/markers"+marker.id, true);
-    brisac.send();
-}
-
 function dohvatiUsera(){
     var ajax = new XMLHttpRequest();
     ajax.open("GET","/users",true);

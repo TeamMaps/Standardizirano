@@ -32,3 +32,32 @@
     height:30px;
     background-color: black;
 }
+
+.svijetlo {
+    background: linear-gradient(to right, rgba(84, 104, 229, 0), rgba(84, 104, 229,0.5));
+}
+
+.svijetlo2 {
+        background: linear-gradient(to right, rgba(84, 104, 229, 0.5), rgba(84, 104, 229,0.78));
+}
+
+#myMarks {
+    height: 620px;
+    overflow:scroll;
+}
+
+
+
+.marklist {
+    margin-top:25px;
+    margin-right: 3%;
+}
+
+.markbtn {
+    position:relative; 
+    bottom:5px;
+}
+
+#hookme {
+
+}
