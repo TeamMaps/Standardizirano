@@ -269,7 +269,7 @@ $('#viewModal').on('hidden.bs.modal', function () {
    }(document, 'script', 'facebook-jssdk'));
 
 
-// dodaj selector za not hidden only
+
 function tornado(){
     tornadoArray = [];
     var pad = new google.maps.LatLng (padlat,padlng);

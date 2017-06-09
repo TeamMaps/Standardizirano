@@ -124,6 +124,7 @@ passport.deserializeUser(function( user , done ) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/',function(req,res,next){
+    if(typeof req.user != "undefined") res.redirect("/home");
     res.sendFile('index.html', { root: __dirname } )
 })
 

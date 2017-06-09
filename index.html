@@ -5,55 +5,64 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link href="https://fonts.googleapis.com/css?family=Cormorant+SC" rel="stylesheet"> 
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta charset="utf-8">
    <title>Team Maps</title>
 </head>
     
-<body onload="ucitajPodatke()">
-    
-<!--<script src="./javascripts/facebookAPI.js"></script>-->
-    
- <nav class="navbar navbar-inverse navbar-fixed-top mojnav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      </div>
-      <a class="navbar-brand" href="/">TeamMaps</a>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a href="/home"><span class="glyphicon glyphicon-home"></span>Home</a></li>
-        <li><a href="#">Tim</a></li>
-        <li><a href="#">Filter</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right marg">  
-        <a href="/auth/facebook" class="btn btn-info navbar-btn"><i class="fa fa-facebook"></i>Facebook login</a>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Sign up/Login</a></li>
-      </ul>
-     </div>
-    </div>
-</nav> <!-- navigation bar-->
-    
+<body onload="dobaviMarkere();dohvatiUsera()">
+
+<a href="/team"><img src="./images/logo.png" height="70" id ="logo"> </a>
+<img src="./images/parachute.png" id="parachut" draggable="true" ondragend="setTimeout(function(){ tornado(); }, 200);">
+
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-6"> 
-            <div id="map"></div>
-        </div>
-        <div class="col-sm-6">
-             <ul class="list-group">
-                 <!-- Ovdje generirat i lijepo objasnit feed -->
-                 <a class="list-group-item active" href="users/login">Login     <span class="badge">12</span></a>
-                 <a class="list-group-item" href="public/user.html"      >User    <span class="badge">5 </span></a>
-                 <a class="list-group-item list-group-item-info"  >Vali      <span class="badge">3 </span></a>
-             </ul> 
-        </div>
+    <div class="col-xs-12" id="map">
+    <!-- mapa -->
     </div>
-</div>                        <!-- mapa i fid -->   
-          
+    <div class="col-xs-offset-6 col-xs-6 col-sm-offset-8 col-sm-4 col-lg-offset-9 col-lg-3 tablicadiv">
+        <a href="/auth/facebook" class="btn btn-info btn-lg mojbtn">Facebook login</a>
+            <div class="row mojrow" id="suparow">
+               
+            </div>
+        <ul class="list-unstyled list-group" id="novo">
+        </ul>
+    </div>
+        <div class="col-xs-12  col-lg-offset-3 col-lg-6 iconrow">
+            <div class="icon-bar ikondol" style="border-top:solid 1px black">
+                <a class="active" onclick="iconMediaToggler(1,this)" href="#"><i class="fa fa-map-marker"></i></a>
+                <a class="active" onclick="iconMediaToggler(2,this)"><i class="fa fa-beer"></i></a>
+                <a class="active" onclick="iconMediaToggler(3,this)"><i class="fa fa-book"></i></a>
+                <a class="active" onclick="iconMediaToggler(5,this)"><i class="fa fa-map-signs"></i></a>
+                <a class="active" onclick="iconMediaToggler(13,this)"><i class="fa fa-futbol-o"></i></a>
+                <a class="active" onclick="iconMediaToggler(6,this)"><i class="fa fa-cutlery"></i></a>
+                <a class="active" onclick="iconMediaToggler(12,this)"><i class="fa fa-camera"></i></a>
+                <a class="active" onclick="iconMediaToggler(7,this)"><i class="fa fa-suitcase"></i></a>
+                <a class="active" onclick="iconMediaToggler(14,this)"><i class="fa fa-tree"></i></a>
+                <a class="active" onclick="iconMediaToggler(4,this)"><i class="fa fa-sun-o"></i></a>
+            </div>
+            <div class="row" style="padding-left:15px;padding-right:15px;">
+                <div class="icon-bar ikondol" style="border-bottom:solid 1px black">
+                    <a class="active" onclick="iconMediaToggler(16,this)"><i class="fa fa-coffee"></i></a>
+                    <a class="active" onclick="iconMediaToggler(15,this)"><i class="fa fa-exclamation"></i></a>
+                    <a class="active" onclick="iconMediaToggler(18,this)"><i class="fa fa-group"></i></a>
+                    <a class="active" onclick="iconMediaToggler(11,this)"><i class="fa fa-bicycle"></i></a>
+                    <a class="active" onclick="iconMediaToggler(10,this)"><i class="fa fa-music"></i></a>
+                    <a class="active" onclick="iconMediaToggler(9,this)"><i class="fa fa-institution"></i></a>
+                    <a class="active" onclick="iconMediaToggler(19,this)"><i class="fa fa-shopping-bag"></i></a>
+                    <a class="active" onclick="iconMediaToggler(20,this)"><i class="fa fa-star"></i></a>
+                    <a class="active" onclick="iconMediaToggler(8,this)"><i class="fa fa-film"></i></a>
+                    <a class="active" onclick="iconMediaToggler(17,this)"><i class="fa fa-link"></i></a>
+                </div>
+            </div>
+        </div>
+</div>
+
+   
+    
+    
+
+<!--modali-->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
         
@@ -62,9 +71,66 @@
             <div class="modal-body">
                 <form role="form" action="">
                     <div class="form-group">
-                        <label for="title"><span class="glyphicon glyphicon-flag"></span> Naziv</label>
+                        <label for="title"><span class="glyphicon glyphicon-flag" required></span> Naziv</label>
                         <input type="text" class="form-control" id="title" name="title">
                     </div>
+                    <div class="container-fluid" style="border" id="ikone">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="icon-bar">
+                                    <a class="active" onclick="icon=1;iconSelector(this)" href="#" id="ikona1"><i class="fa fa-map-marker"></i></a>
+                                    <a href="#" onclick="icon=2;iconSelector(this)"><i class="fa fa-beer"></i></a>
+                                    <a href="#" onclick="icon=3;iconSelector(this)"><i class="fa fa-book"></i></a>
+                                    <a href="#" onclick="icon=5;iconSelector(this)"><i class="fa fa-map-signs"></i></a>
+                                    <a href="#" onclick="icon=13;iconSelector(this)"><i class="fa fa-futbol-o"></i></a>
+                                    <a href="#" onclick="icon=6;iconSelector(this)"><i class="fa fa-cutlery"></i></a>
+                                    <a href="#" onclick="icon=12;iconSelector(this)"><i class="fa fa-camera"></i></a>
+                                    <a href="#" onclick="icon=7;iconSelector(this)"><i class="fa fa-suitcase"></i></a>
+                                    <a href="#" onclick="icon=14;iconSelector(this)"><i class="fa fa-tree"></i></a>
+                                    <a href="#" onclick="icon=4;iconSelector(this)"><i class="fa fa-sun-o"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:1%">
+                            <div class="col-sm-12">
+                                <div class="icon-bar">
+                                    <a href="#" onclick="icon=16;iconSelector(this)"><i class="fa fa-coffee"></i></a>
+                                    <a href="#" onclick="icon=15;iconSelector(this)"><i class="fa fa-exclamation"></i></a>
+                                    <a href="#" onclick="icon=18;iconSelector(this)"><i class="fa fa-group"></i></a>
+                                    <a href="#" onclick="icon=11;iconSelector(this)"><i class="fa fa-bicycle"></i></a>
+                                    <a href="#" onclick="icon=10;iconSelector(this)"><i class="fa fa-music"></i></a>
+                                    <a href="#" onclick="icon=9;iconSelector(this)"><i class="fa fa-institution"></i></a>
+                                    <a href="#" onclick="icon=19;iconSelector(this)"><i class="fa fa-shopping-bag"></i></a>
+                                    <a href="#" onclick="icon=20;iconSelector(this)"><i class="fa fa-star"></i></a>
+                                    <a href="#" onclick="icon=8;iconSelector(this)"><i class="fa fa-film"></i></a>
+                                    <a href="#" onclick="icon=17;iconSelector(this)"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="myCarousel"  data-interval="false" class="carousel slide" data-ride="carousel">
+
+                        <div class="carousel-inner centar" id="karouselkuka">  
+                           <div class="item active">
+                            <img src="http://animals.sandiegozoo.org/sites/default/files/2016-10/owl_southern_white_faced.jpg" id="prva">
+                           </div>
+                           <div class="item">
+                            <img src="http://animals.sandiegozoo.org/sites/default/files/2016-10/owl_southern_white_faced.jpg" id="druga">
+                           </div>
+                        </div>
+
+                            <a class="left carousel-control" href="#myCarousel" data-slide="prev" id="lijeva">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" href="#myCarousel" data-slide="next" id="desna">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+
+                    </div>
+
                     <div class="form-group">
                         <label for="opis"><span class="glyphicon glyphicon-list"></span> Opis</label>
                         <textarea class="form-control" rows="5" id="opis"> ayy </textarea>
@@ -76,19 +142,79 @@
                     </div>
                     <button type="button" class="btn btn-success btn-block" onclick="modalSend()"><span class="glyphicon glyphicon-ok"></span> Submit</button>
                 </form>
+              
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger pull-left" data-dismiss="modal" ><span class="glyphicon glyphicon-remove"></span> Dismiss</button>
+                  <form id="imageForm" enctype="multipart/form-data" action="/images" method="post">
+                      <input type="file" name="userPhoto" id="shit" class="pull-right">
+                  </form>
+                <button class="btn btn-danger pull-left" data-dismiss="modal" onclick="slike=[]"><span class="glyphicon glyphicon-remove"></span> Dismiss</button>
+                <button type="button" class="btn btn-success" onclick="saljiSliku()">Add image</button>
             </div>
         </div>
         
     </div> <!-- smor -->
 </div>   
-    
+
+<div id="viewModal" class="modal" role="dialog"> <!-- fade odat ak nije kriv za tornado bag -->
+    <div class="modal-dialog">
+
+    <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="vmtitle"></h4>
+            </div>
+        <div class="modal-body">
+            
+            <div id="bodyKuka"></div>
+            
+            <div id="viewCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" id="viewKuka">
+                    <div class="item active" id="aktivni">
+                        <img src="http://animals.sandiegozoo.org/sites/default/files/2016-10/owl_southern_white_faced.jpg" id ="viewprva">
+                    </div>
+                    <div class="item">
+                        <img src="http://d2fbmjy3x0sdua.cloudfront.net/cdn/farfuture/rze1T29Ah0NkOVXueSpQXkTBwkG5zDkqLuhrxx2z8pY/mtime:1486675429/sites/default/files/styles/bean_wysiwyg_full_width/public/PSLongEaredOwl1.jpg?itok=c__riHZN" id="viewdruga">
+                    </div>
+                    <a class="left carousel-control" href="#viewCarousel" data-slide="prev" id="zastita">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#viewCarousel" data-slide="next" id="zastita">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            
+            <p id="vmopis"></p>
+        </div>
+        <div class="modal-footer" id="tornadoFooter">
+            <button class="btn btn-info pull-left" onclick="tornadoView(-1)"><span class="glyphicon glyphicon-chevron-left"></span></button>
+            <span class="label label-primary" id="udaljenost"></span>
+            <button class="btn btn-info" onclick="tornadoView(1)"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        </div>
+    </div>
+  </div>
+</div>    
+
+<div id = "errorModal" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+         <div class="modal-content">
+             <div class="modal-body">
+                <h3 id="error"></h3>
+             </div>
+            <div class="modal-footer">
+                <center><a href="/auth/facebook" class="btn btn-info">Log in with facebook</a></center>
+            </div>
+        </div>
+    </div>
+</div> 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjP0mIv4XxH3DQo42HExq-IKmY0gjjyq4&callback=initMap"> </script>
-<script src="./javascripts/googleAPI.js"></script>
-<script src="./javascripts/servercoms.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjP0mIv4XxH3DQo42HExq-IKmY0gjjyq4&libraries=geometry&callback=initMap"> </script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script src="./javascripts/home.js"></script>
 </body>
 </html>
