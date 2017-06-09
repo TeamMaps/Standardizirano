@@ -282,3 +282,19 @@ body {
     top:450px;
     z-index: 2;
 }
+
+
+
+
+
+
+
+#udaljenost {
+    position:relative;
+    right:30.5%;
+    font-size: 15px;
+}
+
+#tornadoFooter {
+    display:none;
+}

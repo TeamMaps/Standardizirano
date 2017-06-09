@@ -15,9 +15,12 @@ var bodyKuka = document.getElementById("bodyKuka");
 var viewPrva = document.getElementById("viewprva");
 var viewDruga = document.getElementById("viewdruga");
 var mediaPointeri = [];
+var udaljenost = document.getElementById("udaljenost");
 for(var i = 0; i < 20; i++){
     mediaPointeri[i] = [];
 }
+var aktivni = document.getElementById("aktivni");
+var tornadoFooter = document.getElementById("tornadoFooter");
 
 var aktiv = 0;
 
@@ -169,7 +172,7 @@ function teamMarkerMediaConstructor(dataObject){
         var img = document.createElement("img");
         img.src = this.images[2+i];
         divic.appendChild(img);
-        viewKuka.appendChild(divic);
+        viewKuka.insertBefore(divic, aktivni);
         }
         viewCarousel.style.display = "block";
         }
@@ -242,29 +245,32 @@ function iconMediaToggler(num,ikon){
     
 
 $('#viewModal').on('hidden.bs.modal', function () {
-  if ( typeof bodyKuka.childNodes[0] == "object"){ bodyKuka.removeChild(bodyKuka.childNodes[0])};
-  while (viewKuka.lastChild.className != "right carousel-control"){ viewKuka.removeChild(viewKuka.lastChild)};
+  if ( typeof bodyKuka.childNodes[0] == "object" && bodyKuka.childNodes[0].height == "300"){ bodyKuka.removeChild(bodyKuka.childNodes[0])};
+  for (x in viewKuka.children){if(typeof x.id == undefined){console.log(x);delete x}};
   viewCarousel.style.display = "none";
 })
-// probs ne trea
-// window.fbAsyncInit = function() {
-//    FB.init({
-//      appId      : '224816561339578',
-//      xfbml      : true,
-//      version    : 'v2.9'
-//    });
-//    FB.AppEvents.logPageView();
-//   };
-//
-//   (function(d, s, id){
-//     var js, fjs = d.getElementsByTagName(s)[0];
-//     if (d.getElementById(id)) {return;}
-//     js = d.createElement(s); js.id = id;
-//     js.src = "//connect.facebook.net/en_US/sdk.js";
-//     fjs.parentNode.insertBefore(js, fjs);
-//   }(document, 'script', 'facebook-jssdk'));
-tornadoArray = [];
+
+ window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '224816561339578',
+      xfbml      : true,
+      version    : 'v2.9'
+    });
+    FB.AppEvents.logPageView();
+   };
+
+   (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+
+// dodaj selector za not hidden only
 function tornado(){
+    tornadoArray = [];
     var pad = new google.maps.LatLng (padlat,padlng);
     for(var i = 0; i < 20; i++){
     for(x in mediaPointeri[i])
@@ -274,11 +280,16 @@ function tornado(){
     }
     tornadoArray.sort(function(a, b){return a.udaljenost-b.udaljenost});
     tornadopos = 0;
+    tornadoFooter.style.display = "block";
+    udaljenost.innerHTML = "Udaljenost:"+tornadoArray[0].udaljenost+"km";
     tornadoArray[0].pointer.googlemarker.markModal();
 }
 //dodat da tornado ignorira skrivene, uljepsat modale
-function tornadoView(){
+function tornadoView(num){
     $('#viewModal').modal("hide");
-    tornadopos++;
+    tornadopos += num;
+    if(tornadopos < 0){tornadopos = tornadoArray.length-1};
+    udaljenost.innerHTML = "Udaljenost:"+tornadoArray[tornadopos].udaljenost+"km";
     tornadoArray[tornadopos].pointer.googlemarker.markModal(); 
 }
+

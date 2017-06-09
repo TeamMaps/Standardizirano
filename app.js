@@ -204,7 +204,7 @@ app.route('/markers')
     var prijatelji = [];
     for(x in req._passport.session.user.friends){prijatelji.push(req._passport.session.user.friends[x])}
     prijatelji.push(req._passport.session.user.facebook_id);
-    connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+ prijatelji.join()+ ')', function(err, rows){ 
+    connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+ prijatelji.join()+ ') && privacy < 2 ORDER BY privacy DESC,marker_id DESC', function(err, rows){ 
         if (err) throw err;
         res.json(rows);
     })
