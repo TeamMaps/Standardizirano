@@ -78,8 +78,6 @@ function dohvatiUsera(){
         if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
             console.log(this.responseText)
             var data = JSON.parse(this.responseText);
-            userName = data.name;
-            userPhoto = data.picture;
             document.getElementById("profile").innerHTML = data.name;
             document.getElementById("profilna").src = data.picture;
         }
@@ -101,26 +99,23 @@ function modalSend(){
         if(privatnost[i].checked){ checked = privatnost[i].value};
     }
     paket.send('title='+title.value+'&privatnost='+checked+'&lat='+lat+'&lng='+lng+'&opis='+opis.value+'&slike='+slike+"&icon="+icon);
-//     var marker = new google.maps.Marker({
-//              position: { lat : lat, lng : lng },
-//              icon: "./images/icon"+icon+".png",
-//              map: map,
-//              content: opis.value
-//              });
-//              marker.addListener("mouseover", function(){
-//              infowindow = new google.maps.InfoWindow();
-//              infowindow.setContent(this.content);
-//              infowindow.open(map, this);
-//              });
-//              marker.addListener("mouseout", function(){
-//              infowindow.close();
-//              })
-    var dataObjekt = {lat:lat,lng:lng, icon:icon, opis: opis.value, path: slike.toString(), title:title.value};
-    teamMarkerMediaConstructor(dataObjekt);
+     var marker = new google.maps.Marker({
+              position: { lat : lat, lng : lng },
+              icon: "./images/icon"+icon+".png",
+              map: map,
+              content: opis.value
+              });
+              marker.addListener("mouseover", function(){
+              infowindow = new google.maps.InfoWindow();
+              infowindow.setContent(this.content);
+              infowindow.open(map, this);
+              });
+              marker.addListener("mouseout", function(){
+              infowindow.close();
+              })
     $('#myModal').modal("toggle");
     title.value = "";
     opis.value = "";
-    slike = [];
     icon = 1;
     currentIcon.className = "";
     currentIcon = document.getElementById("ikona1");
@@ -146,7 +141,7 @@ function saljiSliku(){
     document.getElementById('shit').value="";
     }
 }
-//lokalno u ovaj konstruktor
+
 function teamMarkerMediaConstructor(dataObject){
     var marker = new google.maps.Marker({
         position: { lat : dataObject.lat, lng : dataObject.lng },
@@ -155,7 +150,7 @@ function teamMarkerMediaConstructor(dataObject){
         map: map,
         title: dataObject.title,
         content: dataObject.opis,
-        id: dataObject.marker_id || "lokalno",
+        id: dataObject.marker_id,
         markModal: function(){
         vmtitle.innerHTML = this.title;
         vmopis.innerHTML = this.content;
@@ -216,13 +211,13 @@ function teamMarkerMediaConstructor(dataObject){
         medialeft.className = "media-left";
         medialeft.style.padding = "10px";
         var image = document.createElement("img");
-        image.src= dataObject.photo || userPhoto ||'./images/no-avatar.jpg';
+        image.src= dataObject.photo;
         image.className = "media-object mediaslika";
         image.height = "100";
         var mediabody = document.createElement("div");
         mediabody.className = "media-body";
         var mediaheading = document.createElement("h4");
-        mediaheading.innerHTML = dataObject.username || userName || "Username";
+        mediaheading.innerHTML = dataObject.username;
         mediaheading.className = "media-heading";
         mediaheading.style.borderBottom ="solid blue 1px";
         var textnode = document.createElement("p");

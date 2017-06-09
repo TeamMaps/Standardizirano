@@ -11,7 +11,7 @@
    <title>Team Maps</title>
 </head>
     
-<body onload="dobaviMarkere();dohvatiUsera()">
+<body>
 
 <a href="/team"><img src="./images/logo.png" height="70" id ="logo"> </a>
 <img src="./images/parachute.png" id="parachut" draggable="true" ondragend="setTimeout(function(){ tornado(); }, 200);">
@@ -21,9 +21,8 @@
     <!-- mapa -->
     </div>
     <div class="col-xs-offset-6 col-xs-6 col-sm-offset-8 col-sm-4 col-lg-offset-9 col-lg-3 tablicadiv">
-        <a href="/auth/facebook" class="btn btn-info btn-lg mojbtn">Facebook login</a>
             <div class="row mojrow" id="suparow">
-               
+               <a href="/auth/facebook" class="btn btn-info btn-lg mojbtn">Facebook login</a>
             </div>
         <ul class="list-unstyled list-group" id="novo">
         </ul>
@@ -145,18 +144,15 @@
               
             </div>
             <div class="modal-footer">
-                  <form id="imageForm" enctype="multipart/form-data" action="/images" method="post">
-                      <input type="file" name="userPhoto" id="shit" class="pull-right">
-                  </form>
-                <button class="btn btn-danger pull-left" data-dismiss="modal" onclick="slike=[]"><span class="glyphicon glyphicon-remove"></span> Dismiss</button>
-                <button type="button" class="btn btn-success" onclick="saljiSliku()">Add image</button>
+                <button class="btn btn-danger pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Dismiss</button>
+                <button type="button" class="btn btn-success" onclick="sacuvajForm()">Add image</button> <!-- sacuvati marker lokalno-->
             </div>
         </div>
         
     </div> <!-- smor -->
 </div>   
 
-<div id="viewModal" class="modal" role="dialog"> <!-- fade odat ak nije kriv za tornado bag -->
+<div id="viewModal" class="modal" role="dialog"> 
     <div class="modal-dialog">
 
     <!-- Modal content-->
