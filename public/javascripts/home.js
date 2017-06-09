@@ -248,6 +248,7 @@ $('#viewModal').on('hidden.bs.modal', function () {
   if ( typeof bodyKuka.childNodes[0] == "object" && bodyKuka.childNodes[0].height == "300"){ bodyKuka.removeChild(bodyKuka.childNodes[0])};
   for (x in viewKuka.children){if(typeof x.id == undefined){console.log(x);delete x}};
   viewCarousel.style.display = "none";
+  tornadoFooter.style.display = "none";
 })
 
  window.fbAsyncInit = function() {
@@ -273,6 +274,7 @@ function tornado(){
     tornadoArray = [];
     var pad = new google.maps.LatLng (padlat,padlng);
     for(var i = 0; i < 20; i++){
+    if(typeof mediaPointeri[i][0] != "undefined" && mediaPointeri[i][0].style.display == "none"){continue}; 
     for(x in mediaPointeri[i])
     tornadoArray.push({udaljenost:(google.maps.geometry.spherical.computeDistanceBetween(pad, mediaPointeri[i][x].googlemarker.getPosition())/1000).toFixed(2),
                   pointer:mediaPointeri[i][x]}
@@ -287,6 +289,7 @@ function tornado(){
 //dodat da tornado ignorira skrivene, uljepsat modale
 function tornadoView(num){
     $('#viewModal').modal("hide");
+    tornadoFooter.style.display = "block";
     tornadopos += num;
     if(tornadopos < 0){tornadopos = tornadoArray.length-1};
     udaljenost.innerHTML = "Udaljenost:"+tornadoArray[tornadopos].udaljenost+"km";
