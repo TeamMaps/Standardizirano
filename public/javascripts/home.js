@@ -98,7 +98,8 @@ function modalSend(){
        }
     };
     for(var i=0;i<privatnost.length;i++){
-        if(privatnost[i].checked){ checked = privatnost[i].value};
+        if(privatnost[i].checked){ checked = privatnost[i].value;break;};
+        checked = 0;
     }
     paket.send('title='+title.value+'&privatnost='+checked+'&lat='+lat+'&lng='+lng+'&opis='+opis.value+'&slike='+slike+"&icon="+icon);
 //     var marker = new google.maps.Marker({
@@ -226,14 +227,14 @@ function teamMarkerMediaConstructor(dataObject){
         mediaheading.className = "media-heading";
         mediaheading.style.borderBottom ="solid blue 1px";
         var textnode = document.createElement("p");
-        textnode.innerHTML = dataObject.opis;
+        textnode.innerHTML = dataObject.title;
         medialeft.appendChild(image);
         mediabody.appendChild(mediaheading);
         mediabody.appendChild(textnode);
         media.appendChild(medialeft);
         media.appendChild(mediabody);
         mediaPointeri[dataObject.icon-1].push(media)
-        feed.appendChild(media);
+        feed.insertBefore(media,feed.firstChild);
 }
 
 function iconMediaToggler(num,ikon){

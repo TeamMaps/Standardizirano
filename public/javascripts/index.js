@@ -21,6 +21,7 @@ for(var i = 0; i < 20; i++){
 }
 var aktivni = document.getElementById("aktivni");
 var tornadoFooter = document.getElementById("tornadoFooter");
+var localData = [];
 
 var aktiv = 0;
 
@@ -52,96 +53,44 @@ function iconSelector(that){
     that.className +=' active';
 }
 
-function dobaviMarkere(){
-    var ajax = new XMLHttpRequest();
-    ajax.open("GET","/markers", true);
-    ajax.onreadystatechange = function (){
-        if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
-              var podatci = JSON.parse(this.responseText)
-              for(x in podatci){teamMarkerMediaConstructor(podatci[x])}
-          }
-    }
-    ajax.send();
-}
-
-function obrisiMarker(marker){
-    marker.setVisible(false);
-    var brisac = new XMLHttpRequest();
-    brisac.open("DELETE","/markers"+marker.id, true);
-    brisac.send();
-}
-
-function dohvatiUsera(){
-    var ajax = new XMLHttpRequest();
-    ajax.open("GET","/users",true);
-    ajax.onreadystatechange = function (){
-        if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
-            console.log(this.responseText)
-            var data = JSON.parse(this.responseText);
-            document.getElementById("profile").innerHTML = data.name;
-            document.getElementById("profilna").src = data.picture;
-        }
-    }
-    ajax.send();
-}
-
 function modalSend(){
-    var paket = new XMLHttpRequest();
-    paket.open("POST","/markers",true);
-    paket.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    paket.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 402) {
-       document.getElementById("error").innerHTML = paket.responseText;
-       $('#errorModal').modal();
-       }
-    };
     for(var i=0;i<privatnost.length;i++){
-        if(privatnost[i].checked){ checked = privatnost[i].value};
+        if(privatnost[i].checked){ checked = privatnost[i].value; break};
+        checked=0;
     }
-    paket.send('title='+title.value+'&privatnost='+checked+'&lat='+lat+'&lng='+lng+'&opis='+opis.value+'&slike='+slike+"&icon="+icon);
-     var marker = new google.maps.Marker({
-              position: { lat : lat, lng : lng },
-              icon: "./images/icon"+icon+".png",
-              map: map,
-              content: opis.value
-              });
-              marker.addListener("mouseover", function(){
-              infowindow = new google.maps.InfoWindow();
-              infowindow.setContent(this.content);
-              infowindow.open(map, this);
-              });
-              marker.addListener("mouseout", function(){
-              infowindow.close();
-              })
+    var dataObjekt = {lat:lat,lng:lng, icon:icon, opis: opis.value, path: slike.toString(), title:title.value}
+    localData.push(dataObjekt);
+    teamMarkerMediaConstructor(dataObjekt);
     $('#myModal').modal("toggle");
     title.value = "";
     opis.value = "";
+    slike = [];
     icon = 1;
     currentIcon.className = "";
     currentIcon = document.getElementById("ikona1");
     currentIcon.className = "active";
     aktiv = 0;
 }
-
-function saljiSliku(){
-    if(document.getElementById("shit").value !== ""){ 
-    $('#imageForm').ajaxSubmit({url: '/images', type: 'post',  success : function (response) {
-           if(aktiv === 0){document.getElementById("prva").src= response ; karousel.style.display = "block";aktiv++;slike.push(response)}
-           else if(aktiv === 1){document.getElementById("druga").src = response; document.getElementById("druga").style.display="block"; aktiv++;slike.push(response)}
-           else{ 
-           var cdiv = document.createElement("div");
-           cdiv.className = "item";
-           slike.push(response);
-           var img = document.createElement("img");
-           img.src = response;
-           cdiv.appendChild(img);
-           karouselkuka.appendChild(cdiv);
-           }
-        }});
-    document.getElementById('shit').value="";
-    }
-}
-
+// reader objekt?
+//function saljiSliku(){
+//    if(document.getElementById("shit").value !== ""){ 
+//    $('#imageForm').ajaxSubmit({url: '/images', type: 'post',  success : function (response) {
+//           if(aktiv === 0){document.getElementById("prva").src= response ; karousel.style.display = "block";aktiv++;slike.push(response)}
+//           else if(aktiv === 1){document.getElementById("druga").src = response; document.getElementById("druga").style.display="block"; aktiv++;slike.push(response)}
+//           else{ 
+//           var cdiv = document.createElement("div");
+//           cdiv.className = "item";
+//           slike.push(response);
+//           var img = document.createElement("img");
+//           img.src = response;
+//           cdiv.appendChild(img);
+//           karouselkuka.appendChild(cdiv);
+//           }
+//        }});
+//    document.getElementById('shit').value="";
+//    }
+//}
+//lokalno u ovaj konstruktor
 function teamMarkerMediaConstructor(dataObject){
     var marker = new google.maps.Marker({
         position: { lat : dataObject.lat, lng : dataObject.lng },
@@ -150,7 +99,7 @@ function teamMarkerMediaConstructor(dataObject){
         map: map,
         title: dataObject.title,
         content: dataObject.opis,
-        id: dataObject.marker_id,
+        id: dataObject.marker_id || "lokalno",
         markModal: function(){
         vmtitle.innerHTML = this.title;
         vmopis.innerHTML = this.content;
@@ -211,24 +160,24 @@ function teamMarkerMediaConstructor(dataObject){
         medialeft.className = "media-left";
         medialeft.style.padding = "10px";
         var image = document.createElement("img");
-        image.src= dataObject.photo;
+        image.src= dataObject.photo || './images/no-avatar.jpg';
         image.className = "media-object mediaslika";
         image.height = "100";
         var mediabody = document.createElement("div");
         mediabody.className = "media-body";
         var mediaheading = document.createElement("h4");
-        mediaheading.innerHTML = dataObject.username;
+        mediaheading.innerHTML = dataObject.username || "Username";
         mediaheading.className = "media-heading";
         mediaheading.style.borderBottom ="solid blue 1px";
         var textnode = document.createElement("p");
-        textnode.innerHTML = dataObject.opis;
+        textnode.innerHTML = dataObject.title;
         medialeft.appendChild(image);
         mediabody.appendChild(mediaheading);
         mediabody.appendChild(textnode);
         media.appendChild(medialeft);
         media.appendChild(mediabody);
         mediaPointeri[dataObject.icon-1].push(media)
-        feed.appendChild(media);
+        feed.insertBefore(media,feed.firstChild);
 }
 
 function iconMediaToggler(num,ikon){
@@ -251,25 +200,6 @@ $('#viewModal').on('hidden.bs.modal', function () {
   tornadoFooter.style.display = "none";
 })
 
- window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '224816561339578',
-      xfbml      : true,
-      version    : 'v2.9'
-    });
-    FB.AppEvents.logPageView();
-   };
-
-   (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-
-
-
 function tornado(){
     tornadoArray = [];
     var pad = new google.maps.LatLng (padlat,padlng);
@@ -291,8 +221,28 @@ function tornadoView(num){
     $('#viewModal').modal("hide");
     tornadoFooter.style.display = "block";
     tornadopos += num;
+    console.log( tornadoArray[tornadopos]);
     if(tornadopos < 0){tornadopos = tornadoArray.length-1};
     udaljenost.innerHTML = "Udaljenost:"+tornadoArray[tornadopos].udaljenost+"km";
     tornadoArray[tornadopos].pointer.googlemarker.markModal(); 
 }
 
+function localStore(ime,item){
+    localStorage.setItem(ime, JSON.stringify(item));
+}
+
+function localStoreRetrieve(ime){
+    return JSON.parse(localStorage.getItem(ime));
+}
+
+function dobaviMarkere(){
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET","/markers", true);
+    ajax.onreadystatechange = function (){
+        if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
+              var podatci = JSON.parse(this.responseText)
+              for(x in podatci){teamMarkerMediaConstructor(podatci[x])}
+          }
+    }
+    ajax.send();
+}

@@ -237,6 +237,15 @@ body {
     left:3%;
 }
 
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #3b5998;
+    border-color: #3b5998;
+}
+
 .profile {
     height:50px;
     background-color:#3b5998;

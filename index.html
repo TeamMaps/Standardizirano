@@ -11,7 +11,7 @@
    <title>Team Maps</title>
 </head>
     
-<body>
+<body onload="dobaviMarkere()">
 
 <a href="/team"><img src="./images/logo.png" height="70" id ="logo"> </a>
 <img src="./images/parachute.png" id="parachut" draggable="true" ondragend="setTimeout(function(){ tornado(); }, 200);">
@@ -22,7 +22,7 @@
     </div>
     <div class="col-xs-offset-6 col-xs-6 col-sm-offset-8 col-sm-4 col-lg-offset-9 col-lg-3 tablicadiv">
             <div class="row mojrow" id="suparow">
-               <a href="/auth/facebook" class="btn btn-info btn-lg mojbtn">Facebook login</a>
+               <a href="/auth/facebook" class="btn btn-primary btn-lg mojbtn">Facebook login</a>
             </div>
         <ul class="list-unstyled list-group" id="novo">
         </ul>
@@ -137,7 +137,7 @@
                     <div class="form-group">
                          <label class="radio-inline"><input type="radio" name="privatnost" value="2">Private</label>
                          <label class="radio-inline" style="color:blue"><input type="radio" name="privatnost" value="1">Friends</label>
-                         <label class="radio-inline pull-right"><input type="radio" name="privatnost" value="0">Public</label> 
+                         <label class="radio-inline pull-right"><input type="radio" name="privatnost" value="0" checked>Public</label> 
                     </div>
                     <button type="button" class="btn btn-success btn-block" onclick="modalSend()"><span class="glyphicon glyphicon-ok"></span> Submit</button>
                 </form>
@@ -145,7 +145,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Dismiss</button>
-                <button type="button" class="btn btn-success" onclick="sacuvajForm()">Add image</button> <!-- sacuvati marker lokalno-->
+                <a href="/auth/facebook" class="btn btn-primary">Log in with Facebook to add images and share!</a> <!-- sacuvati marker lokalno-->
             </div>
         </div>
         
@@ -186,9 +186,9 @@
             <p id="vmopis"></p>
         </div>
         <div class="modal-footer" id="tornadoFooter">
-            <button class="btn btn-info pull-left" onclick="tornadoView(-1)"><span class="glyphicon glyphicon-chevron-left"></span></button>
+            <button class="btn btn-primary pull-left" onclick="tornadoView(-1);"><span class="glyphicon glyphicon-chevron-left"></span></button>
             <span class="label label-primary" id="udaljenost"></span>
-            <button class="btn btn-info" onclick="tornadoView(1)"><span class="glyphicon glyphicon-chevron-right"></span></button>
+            <button class="btn btn-primary" onclick="tornadoView(1);"><span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>
     </div>
   </div>
@@ -211,6 +211,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjP0mIv4XxH3DQo42HExq-IKmY0gjjyq4&libraries=geometry&callback=initMap"> </script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-<script src="./javascripts/home.js"></script>
+<script src="./javascripts/index.js"></script>
 </body>
 </html>

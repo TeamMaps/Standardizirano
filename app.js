@@ -202,13 +202,20 @@ app.get('/protected/:userFolder/:imageName', function(req,res,next){
 
 app.route('/markers')
 .get(function(req,res,next){
+    if(typeof req.user != "undefined"){
     var prijatelji = [];
     for(x in req._passport.session.user.friends){prijatelji.push(req._passport.session.user.friends[x])}
     prijatelji.push(req._passport.session.user.facebook_id);
-    connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+ prijatelji.join()+ ') && privacy < 2 ORDER BY privacy DESC,marker_id DESC', function(err, rows){ 
+     connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+ prijatelji.join()+ ') && privacy < 2 ORDER BY privacy ,marker_id ', function(err, rows){ 
         if (err) throw err;
         res.json(rows);
     })
+    }
+    else connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers  ON Users_user_id = user_id WHERE privacy = 0 ORDER BY marker_id',function(err,rows){
+        console.log(rows)
+       if(err) throw err;
+       res.json(rows);
+   })
 })
 .post(authenticated, function(req,res,next){ // ovdje trenutacno radim
     var inc = req.body;
