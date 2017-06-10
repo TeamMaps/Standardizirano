@@ -155,7 +155,7 @@ app.get("/logout",function(req,res){
     res.redirect("/");
 })
 app.get("/userData", function(req,res){
-    connection.query('SELECT title,opis,marker_id,icon,privacy FROM markers WHERE Users_user_id = ?',req._passport.session.user.id,function(err,rows){
+    connection.query('SELECT title,opis,marker_id,icon,privacy FROM markers WHERE Users_user_id = ? ORDER BY marker_id DESC',req._passport.session.user.id,function(err,rows){
         res.json(rows);
     })
 })
@@ -211,7 +211,7 @@ app.route('/markers')
     var prijatelji = [];
     for(x in req._passport.session.user.friends){prijatelji.push(req._passport.session.user.friends[x])}
     prijatelji.push(req._passport.session.user.facebook_id);
-     connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+ prijatelji.join()+ ') && privacy < 2 ORDER BY privacy ,marker_id ', function(err, rows){ 
+     connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers ON user_id = Users_user_id WHERE facebook_id IN ('+ prijatelji.join()+ ') || privacy = 0 ORDER BY privacy ,marker_id ', function(err, rows){ 
         if (err) throw err;
         res.json(rows);
     })

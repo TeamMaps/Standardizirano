@@ -90,7 +90,7 @@ body {
 }
 
 #novo {
-    border-top: solid 1px black;
+   
     max-height: 462px;
     overflow: scroll;
     opacity: 0.2;
@@ -118,7 +118,7 @@ body {
 }
 
 .media:hover{
-    background-color: #323bb5 !important;
+   background: linear-gradient(to right, rgba(0,0,255,0.3), rgba(0,0,255,0.65));
 }
 
 #shit {
@@ -168,7 +168,7 @@ body {
 }
 
 .active {
-    background-color: #4CAF50; /* Add an active/current color */
+    background-color: #e7f9c7; /* Add an active/current color */
 }
 
 
@@ -223,7 +223,7 @@ body {
 
 
 .mojrow {
-    height:100px;
+    height:80px;
 }
 
 
@@ -253,7 +253,7 @@ body {
     margin:auto;
     position: relative;
     border-radius:10px;
-    top:20px;
+    top:14px;
 }
 
 
@@ -262,6 +262,7 @@ body {
     float: left;
     color:white;
     margin-top: 15px;
+    text-align: center;
 }
 
 #profilna {

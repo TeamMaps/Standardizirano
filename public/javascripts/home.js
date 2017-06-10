@@ -21,6 +21,9 @@ for(var i = 0; i < 20; i++){
 }
 var aktivni = document.getElementById("aktivni");
 var tornadoFooter = document.getElementById("tornadoFooter");
+var reverseGeo = document.getElementById("reverseGeo");
+
+
 
 var aktiv = 0;
 
@@ -151,6 +154,19 @@ function teamMarkerMediaConstructor(dataObject){
         content: dataObject.opis,
         id: dataObject.marker_id || "lokalno",
         markModal: function(){
+        geocoder = new google.maps.Geocoder;
+        geocoder.geocode({'location': this.getPosition()}, function(results, status) {
+        if (status === 'OK') {
+            if (results[1]) {
+            var g = (results[0].formatted_address).split(",");
+            reverseGeo.innerHTML = g[2]+","+g[0]
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
         vmtitle.innerHTML = this.title;
         vmopis.innerHTML = this.content;
         if(this.images.length == 1){
@@ -211,7 +227,7 @@ function teamMarkerMediaConstructor(dataObject){
         medialeft.style.padding = "10px";
         var image = document.createElement("img");
         image.src= dataObject.photo || userPhoto ||'./images/no-avatar.jpg';
-        image.className = "media-object mediaslika";
+        image.className = "media-object mediaslika img-rounded";
         image.height = "100";
         var mediabody = document.createElement("div");
         mediabody.className = "media-body";
@@ -250,22 +266,7 @@ $('#viewModal').on('hidden.bs.modal', function () {
   tornadoFooter.style.display = "none";
 })
 
- window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '224816561339578',
-      xfbml      : true,
-      version    : 'v2.9'
-    });
-    FB.AppEvents.logPageView();
-   };
 
-   (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
 
 
 

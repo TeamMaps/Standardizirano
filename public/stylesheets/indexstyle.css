@@ -58,6 +58,27 @@
     bottom:5px;
 }
 
-#hookme {
 
+
+.aps {
+    position: absolute;
+    top:0px;
+    left:0px;
+    z-index: 2;
+}
+
+.prikaz {
+    position:absolute;
+    top:150px;
+    left: 150px;
+    z-index: 100;
+}
+
+#sher {
+    position:relative;
+    right:38.5%;
+}
+
+#sharebtn {
+    margin-left:30px;
 }

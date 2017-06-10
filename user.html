@@ -12,20 +12,22 @@
 
 <div class="container col-sm-6 svijetlo" style="min-height:620px !important; overflow:hidden;">
     <div class="row" style="margin-top:40px">
-    <img height="300" style="display:block; margin:auto;" id="profilnaprof">
+        
+    <img height="300" style="display:block; margin:auto;" id="profilnaprof" class="img-rounded">
     </div>
     <h2 style="margin-top:3em;text-align:center" id="username">Username:</h2>
 
     <h2 style="margin-top:0.5em;color:gray;text-align:center" id="email">Email:</h2>
     
     <a class="btn btn-danger btn-lg" href="/logout" style="margin-top:2em; margin-left:20%">Logout <span class="glyphicon glyphicon-off"></span></a>
+    
     <a class="btn btn-primary btn-lg" href="/" style="margin-top:2em; margin-left:55%; position:relative; bottom:82px;">Back to map    <span class="glyphicon glyphicon-globe"></span></a>
+    
+  
 </div>
 <div class="container col-sm-6 svijetlo2" id="myMarks">
     <div class="list-group marklist" id="hookme">
-    <li class="list-group-item active" style="text-align:center">
-    Moji markeri
-    </li>
+    <li class="list-group-item active" style="text-align:center" > Moji markeri </li>
     </div>
 </div>
 
@@ -55,7 +57,7 @@ function loadMyMarkers(){
     ajax.open("GET","/userData",true);
     ajax.onreadystatechange = function () {
         if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
-            var data = JSON.parse(this.responseText);
+          var data = JSON.parse(this.responseText);
             console.log(data)
             for(x in data){
             var listitem = document.createElement("li");
@@ -74,7 +76,7 @@ function loadMyMarkers(){
             });
             listitem.appendChild(buton);
             hookme.appendChild(listitem);
-            }
+           }
         }
     }
     ajax.send();
