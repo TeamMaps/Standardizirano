@@ -12,28 +12,9 @@
 </head>
     
 <body onload="dobaviMarkere();dohvatiUsera()">
-    
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '224816561339578',
-      xfbml      : true,
-      version    : 'v2.9'
-    });
-    FB.AppEvents.logPageView();
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
 
 <a href="/team"><img src="./images/logo.png" height="70" id ="logo"> </a>
-<img src="./images/parachute.png" id="parachut" draggable="true" ondragend="setTimeout(function(){ tornado(); }, 200);">
+<img src="./images/parachute.png" id="parachut" draggable="true" ondragend="setTimeout(function(){ tornado(); }, 200);" data-toggle="tooltip" title="Drop me on the map to start browsing markers by distance from the drop site">
  
 
 
@@ -54,7 +35,8 @@
         </ul>
     </div>
         <div class="col-xs-12  col-lg-offset-3 col-lg-6 iconrow">
-            <div class="icon-bar ikondol" style="border-top:solid 1px black">
+            <input type="text" class="form-control" placeholder="Type an address here to jump to it...                  Click an icon below to hide all markers of its type" id="geoFind">
+            <div class="icon-bar ikondol">
                 <a class="active" onclick="iconMediaToggler(1,this)" href="#"><i class="fa fa-map-marker"></i></a>
                 <a class="active" onclick="iconMediaToggler(2,this)"><i class="fa fa-beer"></i></a>
                 <a class="active" onclick="iconMediaToggler(3,this)"><i class="fa fa-book"></i></a>
@@ -98,6 +80,9 @@
                     <div class="form-group">
                         <label for="title"><span class="glyphicon glyphicon-flag" required></span> Naziv</label>
                         <input type="text" class="form-control" id="title" name="title">
+                    </div>
+                    <div class="alert alert-danger" id="upozorenje" style="display:none">
+                    Marker title should contain 3 to 30 charachters.
                     </div>
                     <div class="container-fluid" style="border" id="ikone">
                         <div class="row">
@@ -187,7 +172,7 @@
     <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="vmtitle"></h4>
+                <h4 class="modal-title" id="vmtitle"></h4> 
                 <h5 id="reverseGeo" class="pull-right"></h5>
             </div>
         <div class="modal-body">

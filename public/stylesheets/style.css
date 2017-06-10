@@ -99,8 +99,8 @@ body {
 }
 @media screen and (max-height: 640px) {
     #novo {
-       max-height:400px;
-       min-height:400px;
+       max-height:380px;
+       min-height:380px;
     }
 }
 
@@ -272,7 +272,6 @@ body {
 
 .iconrow {
     position: absolute;
-    padding-top: 15px;
     z-index: 2;
     opacity: 0;
     transition: opacity 1s;

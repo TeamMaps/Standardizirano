@@ -22,8 +22,8 @@ for(var i = 0; i < 20; i++){
 var aktivni = document.getElementById("aktivni");
 var tornadoFooter = document.getElementById("tornadoFooter");
 var reverseGeo = document.getElementById("reverseGeo");
-
-
+var geoFind = document.getElementById("geoFind");
+var upozorenje = document.getElementById("upozorenje");
 
 var aktiv = 0;
 
@@ -87,6 +87,7 @@ function modalSend(){
     var paket = new XMLHttpRequest();
     paket.open("POST","/markers",true);
     paket.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    if(!/^(.{3,30})$/.test(title.value)){ upozorenje.style.display = "block";return}
     paket.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 402) {
        document.getElementById("error").innerHTML = paket.responseText;
@@ -160,12 +161,8 @@ function teamMarkerMediaConstructor(dataObject){
             if (results[1]) {
             var g = (results[0].formatted_address).split(",");
             reverseGeo.innerHTML = g[2]+","+g[0]
-            } else {
-              window.alert('No results found');
             }
-          } else {
-            window.alert('Geocoder failed due to: ' + status);
-          }
+            }
         });
         vmtitle.innerHTML = this.title;
         vmopis.innerHTML = this.content;
@@ -266,7 +263,9 @@ $('#viewModal').on('hidden.bs.modal', function () {
   tornadoFooter.style.display = "none";
 })
 
-
+$('#myModal').on('hidden.bs.modal', function () {
+    upozorenje.style.display = "none";
+})
 
 
 
@@ -296,3 +295,21 @@ function tornadoView(num){
     tornadoArray[tornadopos].pointer.googlemarker.markModal(); 
 }
 
+geoFind.addEventListener("keyup",function(e){
+        if (e.keyCode == 13) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode( { 'address': geoFind.value }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+        map.setZoom(16);
+        map.panTo({lat:results[0].geometry.location.lat(),lng:results[0].geometry.location.lng()})
+        } else {
+        alert("Geocode was not successful for the following reason: " + status);
+        }
+        });  
+        geoFind.value = "";
+        }
+});
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});

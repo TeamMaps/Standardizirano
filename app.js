@@ -144,6 +144,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
     res.redirect('/home');
   });
 app.get('/home', function(req,res,next){
+    if(typeof req.user == "undefined"){res.redirect("/")};
    res.sendFile('home.html', { root: __dirname } )
 })
 
@@ -191,19 +192,10 @@ app.get('/protected/:userFolder/:imageName', function(req,res,next){
    res.sendFile('./protected/'+req.params.userFolder+'/'+req.params.imageName,{root:__dirname})
 });
 
-/*app.route('/teams')
+app.route('/team')
 .get(function(req,res,next){
-    
-})
-.post(function(req,res,next){
-    
-})
-.put(function(req,res,next){
-    
-})
-.delete(function(req,res,next){
-    
-});*/  // will be adding later
+    res.sendFile("tim.html",{root:__dirname});
+});
 
 app.route('/markers')
 .get(function(req,res,next){
