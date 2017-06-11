@@ -285,6 +285,7 @@ function tornado(){
     tornadoFooter.style.display = "block";
     udaljenost.innerHTML = "Udaljenost:"+tornadoArray[0].udaljenost+"km";
     tornadoInterval = setInterval(function(){tornadoView(1)}, 7000);
+    tornadoToggle.className = "glyphicon glyphicon-pause";
     tornadoArray[0].pointer.googlemarker.markModal();
 }
 //dodat da tornado ignorira skrivene, uljepsat modale
