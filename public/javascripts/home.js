@@ -24,6 +24,7 @@ var tornadoFooter = document.getElementById("tornadoFooter");
 var reverseGeo = document.getElementById("reverseGeo");
 var geoFind = document.getElementById("geoFind");
 var upozorenje = document.getElementById("upozorenje");
+var tornadoToggle = document.getElementById("tornadoToggle");
 
 var aktiv = 0;
 
@@ -210,11 +211,11 @@ function teamMarkerMediaConstructor(dataObject){
         media.addEventListener("mouseover", function(){
             infowindow = new google.maps.InfoWindow();
             infowindow.setContent(this.googlemarker.content);
-            infowindow.open(map, this.googlemarker);
-            map.panTo(this.googlemarker.position);
+            infowindow.open(map, this.googlemarker); 
+            map.panTo(this.googlemarker.position)
         })
         media.addEventListener("mouseout", function(){
-            infowindow.close();
+           infowindow.close();
         })
         media.addEventListener("click", function(){
             this.googlemarker.markModal();
@@ -283,6 +284,7 @@ function tornado(){
     tornadopos = 0;
     tornadoFooter.style.display = "block";
     udaljenost.innerHTML = "Udaljenost:"+tornadoArray[0].udaljenost+"km";
+    tornadoInterval = setInterval(function(){tornadoView(1)}, 7000);
     tornadoArray[0].pointer.googlemarker.markModal();
 }
 //dodat da tornado ignorira skrivene, uljepsat modale
@@ -313,3 +315,14 @@ geoFind.addEventListener("keyup",function(e){
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
 });
+
+function tornadoToggler(){
+    if(tornadoToggle.className == "glyphicon glyphicon-pause" ){
+        tornadoToggle.className = "glyphicon glyphicon-play"
+        clearInterval(tornadoInterval);
+    }
+    else if(tornadoToggle.className == "glyphicon glyphicon-play" ){
+        tornadoInterval = setInterval(function(){tornadoView(1)}, 7000);
+        tornadoToggle.className = "glyphicon glyphicon-pause"
+    }
+}

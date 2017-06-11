@@ -201,9 +201,11 @@
             <p id="vmopis"></p>
         </div>
         <div class="modal-footer" id="tornadoFooter">
-            <button class="btn btn-primary pull-left" onclick="tornadoView(-1)"><span class="glyphicon glyphicon-chevron-left"></span></button>
+            <button class="btn btn-primary pull-left" onclick="tornadoView(-1);"><span class="glyphicon glyphicon-chevron-left"></span></button>
             <span class="label label-primary" id="udaljenost"></span>
-            <button class="btn btn-primary" onclick="tornadoView(1)"><span class="glyphicon glyphicon-chevron-right"></span></button>
+            <button class="btn btn-primary" onclick="tornadoToggler()" title="Start and stop autobrowsing markers" ><span class="glyphicon glyphicon-pause" id="tornadoToggle">
+            </span></button>
+            <button class="btn btn-primary" onclick="tornadoView(1);"><span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>
     </div>
   </div>
