@@ -100,7 +100,6 @@ passport.use(new FacebookStrategy({
     connection.query('SELECT * FROM Users WHERE facebook_id = ?', profile.id, function(err, rows){
         if(err) throw err;
         var friends = [];
-        console.log(profile);
         for(x in profile._json.friends.data){friends.push(profile._json.friends.data[x].id)};
         if(rows.length == 0) {
             var email = (typeof profile.emails !== 'undefined') ? profile.emails[0].value : "noemail";
@@ -164,10 +163,10 @@ app.route('/users')
 .get(function(req,res,next){
   res.json({name:req._passport.session.user.name,picture:req._passport.session.user.picture})
 })
-.post(passport.authenticate('local', {successRedirect:'/images'}), function(req,res,next){
-    console.log("ovdje sam");
-  
-})
+//.post(passport.authenticate('local', {successRedirect:'/images'}), function(req,res,next){
+//    console.log("ovdje sam");
+//  
+//})
 .put(function(req,res,next){
     
 })
@@ -208,7 +207,6 @@ app.route('/markers')
     })
     }
     else connection.query('SELECT username,photo,title,opis,lat,lng,privacy,marker_id,path,icon FROM Users JOIN Markers  ON Users_user_id = user_id WHERE privacy = 0 ORDER BY marker_id LIMIT 250',function(err,rows){
-        console.log(rows)
        if(err) throw err;
        res.json(rows);
    })
@@ -256,11 +254,13 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get(process.env.NODE_ENV) === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
   res.json('error');
 });
-
+process.on('uncaughtException', function(ex) {
+    console.log("Node not crashing");
+});
 module.exports = app;
