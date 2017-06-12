@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var dotenv = require('dotenv').config()
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -16,13 +17,11 @@ var fs = require('file-system');
 var mime = require("mime");
 var shortId = require("shortid");
 
-var config = require('./config'); 
-
 var connection = mysql.createConnection({
-    host:     "localhost",
-    user:     "root",
-    password: "team3password",
-    database: "mydb"
+    host:     process.env.DB_HOST,
+    user:     process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
 });
 connection.connect();
 
@@ -55,7 +54,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
-app.use(expressSession({secret:"secret", resave:true, saveUninitialized:false}));
+app.use(expressSession({secret:process.env.SECRETKEY, resave:true, saveUninitialized:false}));
 
 
 //Passport
