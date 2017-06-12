@@ -62,9 +62,7 @@ function dobaviMarkere(){
     ajax.onreadystatechange = function (){
         if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
               var podatci = JSON.parse(this.responseText)
-              var broji = -1;
-              for(x in podatci){broji++};
-              for(x in podatci){teamMarkerMediaConstructor(podatci[broji-x])}
+             for(x in podatci){teamMarkerMediaConstructor(podatci[podatci.length-1-x])}
           }
     }
     ajax.send();
