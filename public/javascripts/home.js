@@ -1,32 +1,32 @@
-var feed = document.getElementById("novo");                        // feed sa slikama desno gdje idu media objekti 
-var vmtitle = document.getElementById("vmtitle");                  // view modal title 
-var vmopis = document.getElementById("vmopis");                    // view modal opis
-var karouselkuka = document.getElementById("karouselkuka");        // polje unutar modala
-var karousel = document.getElementById("myCarousel");
-var slike = [];
-var icon = 1;
-var currentIcon = document.getElementById("ikona1");
-var title = document.getElementById("title");
-var opis = document.getElementById("opis");
-var privatnost = document.getElementsByName("privatnost");
-var viewCarousel = document.getElementById("viewCarousel")
-var viewKuka = document.getElementById("viewKuka");
-var bodyKuka = document.getElementById("bodyKuka");
-var viewPrva = document.getElementById("viewprva");
-var viewDruga = document.getElementById("viewdruga");
-var mediaPointeri = [];
+var feed = document.getElementById("novo");                        // feed sa slikama desno gdje appendamo media objekte
+var vmtitle = document.getElementById("vmtitle");                  // view modal title polje
+var vmopis = document.getElementById("vmopis");                    // view modal opis polje
+var karouselkuka = document.getElementById("karouselkuka");        // polje unutar modala gdje apendamo ajax response
+var karousel = document.getElementById("myCarousel");              //skriveni carousel u modalu za kreiranje markera
+var currentIcon = document.getElementById("ikona1");               // deault ikona, treba nam da joj promjenimo className
+var title = document.getElementById("title");                      // title input polje
+var opis = document.getElementById("opis");                        // opis input polje
+var privatnost = document.getElementsByName("privatnost");         // privatnost elementi
+var viewCarousel = document.getElementById("viewCarousel");        // view carousel
+var viewKuka = document.getElementById("viewKuka");                // ovdje appendamo slike u carousel
+var bodyKuka = document.getElementById("bodyKuka");                // ovdje apendamo sliku ak je samo jedna, carousel ostaje display:none
+var viewPrva = document.getElementById("viewprva");                // prva slika karousela
+var viewDruga = document.getElementById("viewdruga");              // druga slike karousela, ako nemamo barem dvije slike u carouselu bude buggy na špocetku
+var mediaPointeri = [];                                
 var udaljenost = document.getElementById("udaljenost");
 for(var i = 0; i < 20; i++){
     mediaPointeri[i] = [];
-}
-var aktivni = document.getElementById("aktivni");
-var tornadoFooter = document.getElementById("tornadoFooter");
-var reverseGeo = document.getElementById("reverseGeo");
-var geoFind = document.getElementById("geoFind");
-var upozorenje = document.getElementById("upozorenje");
-var tornadoToggle = document.getElementById("tornadoToggle");
+}                                                                  // dvodimenzionalni array - array arrayeva pointera na media objekte, omogucava nam da efektivno promjenimo display state markera i media objekata neke skupine, skupina se nalazi na indeksu jednakom broju ikone grupe
+var aktivni = document.getElementById("aktivni");                  // aktivna(prva slika carousela)
+var tornadoFooter = document.getElementById("tornadoFooter");      // footer view modala display:none ako modal nije pozvan padobrancem, tamo su tipke
+var reverseGeo = document.getElementById("reverseGeo");            // polje u koje upisujemo rezultat reverse geokodanja u modal hederu
+var geoFind = document.getElementById("geoFind");                  // input polje iznad ikona za geocoding 
+var upozorenje = document.getElementById("upozorenje");            // bootstrap upozorenje za validaciju
+var tornadoToggle = document.getElementById("tornadoToggle");      // dugme za pause/play u tornado footeru
 
-var aktiv = 0;
+var slike = [];                                                    // array trenutno dodanih slika u marker
+var icon = 1;                                                      // ikona
+var aktiv = 0;                                                     // pomaze nam pratiti trenutacno stanje preview modala pri konstruiranju markera, treali li promjeniti src prve, druge ili appendati novi element 
 
 function initMap() {
         var uluru = {lat: 45.3430556, lng: 14.4091667};
@@ -41,34 +41,37 @@ function initMap() {
           });
           map.addListener('click', function(e) {
           lng = e.latLng.lng();
-          lat = e.latLng.lat();
+          lat = e.latLng.lat();                                      // ovako cuvamo gdje je pozvan modal pri konstrukciji modala
           $('#myModal').modal();
-          });
+          });          
           map.addListener('mouseover', function(e){
              padlng = e.latLng.lng();
              padlat = e.latLng.lat();
-          })
+          })                                                         // zabiljezava gdje je ispustena slika
 }    
 
 function iconSelector(that){
+    // mjenja stil ikone u trenutno odabranu, currentIcon je trenutno odabrani icon
     currentIcon.className =''; 
     currentIcon = that; 
     that.className +=' active';
-}
+}                                                                     
 
 function dobaviMarkere(){
+    //body onload metoda salje AJAX serveru, pri povratku konstruiramo markere i mediu
     var ajax = new XMLHttpRequest();
     ajax.open("GET","/markers", true);
     ajax.onreadystatechange = function (){
         if(ajax.readyState == XMLHttpRequest.DONE && ajax.status == 200){
               var podatci = JSON.parse(this.responseText)
-             for(x in podatci){teamMarkerMediaConstructor(podatci[podatci.length-1-x])}
+             for(x in podatci){teamMarkerMediaConstructor(podatci[podatci.length-1-x])}    
           }
     }
     ajax.send();
 }
 
 function dohvatiUsera(){
+    // dohvaca usera passport sesije, i konstruira gumbic gore
     var ajax = new XMLHttpRequest();
     ajax.open("GET","/users",true);
     ajax.onreadystatechange = function (){
@@ -87,7 +90,9 @@ function dohvatiUsera(){
 function modalSend(){
     var paket = new XMLHttpRequest();
     paket.open("POST","/markers",true);
+    // definiramo vrstu enkripcije bodya POSTa
     paket.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //input validation pomocu regexa, unhidea upozorenje
     if(!/^(.{3,30})$/.test(title.value)){ upozorenje.style.display = "block";return}
     paket.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 402) {
@@ -95,27 +100,16 @@ function modalSend(){
        $('#errorModal').modal();
        }
     };
+    //skuplja vrijednost radio buttona
     for(var i=0;i<privatnost.length;i++){
         if(privatnost[i].checked){ checked = privatnost[i].value;break;};
         checked = 0;
     }
+    // saljemo POST AJAX
     paket.send('title='+title.value+'&privatnost='+checked+'&lat='+lat+'&lng='+lng+'&opis='+opis.value+'&slike='+slike+"&icon="+icon);
-//     var marker = new google.maps.Marker({
-//              position: { lat : lat, lng : lng },
-//              icon: "./images/icon"+icon+".png",
-//              map: map,
-//              content: opis.value
-//              });
-//              marker.addListener("mouseover", function(){
-//              infowindow = new google.maps.InfoWindow();
-//              infowindow.setContent(this.content);
-//              infowindow.open(map, this);
-//              });
-//              marker.addListener("mouseout", function(){
-//              infowindow.close();
-//              })
     var dataObjekt = {lat:lat,lng:lng, icon:icon, opis: opis.value, path: slike.toString(), title:title.value};
     teamMarkerMediaConstructor(dataObjekt);
+    // resetiranje input polja
     $('#myModal').modal("toggle");
     title.value = "";
     opis.value = "";
@@ -128,8 +122,10 @@ function modalSend(){
 }
 
 function saljiSliku(){
+    // jquery funkcija AJAX file inputa
     if(document.getElementById("shit").value !== ""){ 
     $('#imageForm').ajaxSubmit({url: '/images', type: 'post',  success : function (response) {
+           // AJAX callback, ovisno o broju vec postavljenih slika mjenja src ili apenda
            if(aktiv === 0){document.getElementById("prva").src= response ; karousel.style.display = "block";aktiv++;slike.push(response)}
            else if(aktiv === 1){document.getElementById("druga").src = response; document.getElementById("druga").style.display="block"; aktiv++;slike.push(response)}
            else{ 
@@ -142,20 +138,24 @@ function saljiSliku(){
            karouselkuka.appendChild(cdiv);
            }
         }});
+    //reset inputa
     document.getElementById('shit').value="";
     }
 }
-//lokalno u ovaj konstruktor
+
+//lprimerni konstruktor
 function teamMarkerMediaConstructor(dataObject){
-    var marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
         position: { lat : dataObject.lat, lng : dataObject.lng },
         icon: "./images/icon"+dataObject.icon+".png",
-        images: dataObject.path.split(","),
+        images: dataObject.path.split(","),  // ovako smo izbjegli dinamicki query, sve slike su pohranjene u jednom polju u bazi i ovdje pomocu 
+        //split funkcije napravimo array pathova slika
         map: map,
         title: dataObject.title,
         content: dataObject.opis,
         id: dataObject.marker_id || "lokalno",
-        markModal: function(){
+        // metoda markera koja onclick konstuira modal iz njegovih polja
+        markModal: function(){                          
         geocoder = new google.maps.Geocoder;
         geocoder.geocode({'location': this.getPosition()}, function(results, status) {
         if (status === 'OK') {
@@ -164,9 +164,9 @@ function teamMarkerMediaConstructor(dataObject){
             reverseGeo.innerHTML = g[2]+","+g[0]
             }
             }
-        });
+        });  
         vmtitle.innerHTML = this.title;
-        vmopis.innerHTML = this.content;
+        vmopis.innerHTML = this.content;    
         if(this.images.length == 1){
         var img = document.createElement("img");
         img.src = this.images[0];
@@ -244,6 +244,7 @@ function teamMarkerMediaConstructor(dataObject){
         feed.insertBefore(media,feed.firstChild);
 }
 
+// ovisno o classNameu(tj izgledu ikone) skriva media elemente i onda prati pointer na njihove markere i skriva njih
 function iconMediaToggler(num,ikon){
     if(typeof mediaPointeri[num-1][0] != "undefined"){
 
@@ -256,10 +257,10 @@ function iconMediaToggler(num,ikon){
 }
     
     
-
+// funkcije koje resetiraju izgled modala kad se oni zatvore da se ne bi samo nakupljao content svakog markera
 $('#viewModal').on('hidden.bs.modal', function () {
   if ( typeof bodyKuka.childNodes[0] == "object" && bodyKuka.childNodes[0].height == "300"){ bodyKuka.removeChild(bodyKuka.childNodes[0])};
-  for (x in viewKuka.children){if(typeof x.id == undefined){console.log(x);delete x}};
+  for (x in viewKuka.children){if(typeof x.id == undefined){delete x}};
   viewCarousel.style.display = "none";
   tornadoFooter.style.display = "none";
 })
@@ -269,7 +270,9 @@ $('#myModal').on('hidden.bs.modal', function () {
 })
 
 
-
+// funkcija za padobranca, prelazi cijeli dvodimenzionalni array(preskace skrivene skupine) i konstruira array objekata
+// koji sadrzi udaljenost i pointer na objekt, objekti se tada sortaju po svojstvu udaljenosti i pointerima se dolazi do 
+// markModal() metoda markera
 function tornado(){
     tornadoArray = [];
     var pad = new google.maps.LatLng (padlat,padlng);
@@ -284,14 +287,17 @@ function tornado(){
     tornadopos = 0;
     tornadoFooter.style.display = "block";
     udaljenost.innerHTML = "Udaljenost:"+tornadoArray[0].udaljenost+"km";
+    //definiramo torando interval
     tornadoInterval = setInterval(function(){tornadoView(1)}, 7000);
     tornadoToggle.className = "glyphicon glyphicon-pause";
     tornadoArray[0].pointer.googlemarker.markModal();
 }
-//dodat da tornado ignorira skrivene, uljepsat modale
+
 function tornadoView(num){
     $('#viewModal').modal("hide");
+    //prikaz dugmeta za tornado
     tornadoFooter.style.display = "block";
+    //cuva nasu trenutacnu poziciju u tornadoArray
     tornadopos += num;
     if(tornadopos < 0){tornadopos = tornadoArray.length-1};
     udaljenost.innerHTML = "Udaljenost:"+tornadoArray[tornadopos].udaljenost+"km";
@@ -303,7 +309,7 @@ geoFind.addEventListener("keyup",function(e){
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode( { 'address': geoFind.value }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-        map.setZoom(16);
+        map.setZoom(12);
         map.panTo({lat:results[0].geometry.location.lat(),lng:results[0].geometry.location.lng()})
         } else {
         alert("Geocode was not successful for the following reason: " + status);
@@ -313,10 +319,12 @@ geoFind.addEventListener("keyup",function(e){
         }
 });
 
+//aktivira bootstrap tooltipe
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
 });
 
+// pali i gasi tornadoInterval
 function tornadoToggler(){
     if(tornadoToggle.className == "glyphicon glyphicon-pause" ){
         tornadoToggle.className = "glyphicon glyphicon-play"
