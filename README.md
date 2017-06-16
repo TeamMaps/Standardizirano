@@ -9,8 +9,7 @@ To have access to all the features you will have to log in. Some of the most int
 +  An intuitive interface   
 +  A feed which shows the most recent markers(you facebook friends first, public markers after), pans the map to the site of the     marker when you hover over it   
 +  A filter for showing only the categories of markers you want to see   
-+  A parachuter which can be dropped on the map, sorting markers into an array based on the distance from the drop site and    
-automatically showing modals of the next farthest marker every 7 seconds(can be disabled via a pause button), ignores hidden  markers    
++  A parachuter which can be dropped on the map, sorting markers into an array based on the distance from the drop site and automatically showing modals of the next farthest marker every 7 seconds(can be disabled via a pause button), ignores hidden  markers    
 +  A user page which can be used to see your markers and delete them    
 +  A dynamic view modal which contains the location(obtained via a geocoder query), an image(or a carousel if the marker contains multiple images)    
 +  An input linked with a geocoder whose callback pans the map to the inputed location     
